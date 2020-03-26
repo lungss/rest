@@ -1,0 +1,70 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "demoapi",
+        "version": "1.0.0"
+    },
+    "consumes": [
+    ],
+    "produces": [
+    ],
+    "paths": {
+        "/data": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "request data",
+                        "schema": {
+                            "$ref": "#/definitions/DemoData"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "submit data",
+                        "schema": {
+                            "$ref": "#/definitions/DemoData"
+                        }
+                    }
+                },
+                "operationId": "createData"
+            }
+        }
+    },
+    "definitions": {
+        "DemoData": {
+            "title": "Root Type for DemoData",
+            "description": "",
+            "type": "object",
+            "properties": {
+                "data1": {
+                    "type": "string"
+                },
+                "data2": {
+                    "type": "string"
+                },
+                "data3": {
+                    "type": "string"
+                },
+                "data4": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "data1": "dummy",
+                "data2": "dummy",
+                "data3": "dummy",
+                "data4": "dummy"
+            }
+        }
+    }
+}

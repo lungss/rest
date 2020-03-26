@@ -1,0 +1,8 @@
+org\example\s2\ObjectFactory.class
+org\example\s2\S2.class
+org\example\s2\package-info.class
+org\mycompany\Application.class
+org\example\s2\S2_Service.class
+org\example\s2\S2Response.class
+org\example\s2\S2Request.class
+io\swagger\client\model\DemoData.class

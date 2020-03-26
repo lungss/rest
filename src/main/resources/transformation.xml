@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping https://dozermapper.github.io/schema/bean-mapping.xsd">
+    <configuration>
+        <wildcard>false</wildcard>
+    </configuration>
+    <mapping>
+        <class-a>org.example.s2.S2Response</class-a>
+        <class-b>io.swagger.client.model.DemoData</class-b>
+    </mapping>
+    <mapping>
+        <class-a>org.apache.camel.component.dozer.ExpressionMapper</class-a>
+        <class-b>io.swagger.client.model.DemoData</class-b>
+        <field custom-converter-id="_expressionMapping" custom-converter-param="simple:\${property.s2response.return1}">
+            <a>expression</a>
+            <b>data1</b>
+        </field>
+        <field custom-converter-id="_expressionMapping" custom-converter-param="simple:\${property.s2response.return2}">
+            <a>expression</a>
+            <b>data2</b>
+        </field>
+    </mapping>
+</mappings>

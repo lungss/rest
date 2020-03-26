@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd http://camel.apache.org/schema/spring https://camel.apache.org/schema/spring/camel-spring.xsd">
+    <cxf:cxfEndpoint address="/s2" id="cxfS2" serviceClass="org.example.s2.S2"/>
+    <bean class="org.example.s2.S2Request" id="dummyS2">
+        <property name="param1" value="dummy1 S2"/>
+        <property name="param2" value="dummy2 S2"/>
+    </bean>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="json"
+            component="servlet" contextPath="camel" port="8080">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="My First Camel REST API"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        <rest id="rest-f5742626-965e-40b8-be0b-ea6c398c7aa1">
+            <post consumes="application/json" id="createData"
+                produces="application/json"
+                type="io.swagger.client.model.DemoData" uri="/data">
+                <param description="request data" name="body"
+                    required="true" type="body"/>
+                <to uri="direct:createData"/>
+            </post>
+        </rest>
+        <route id="main">
+            <from id="_direct1" uri="direct:createData"/>
+            <log id="_log1" message="&quot;REST service call received ${body}&quot;&#xd;&#xa;"/>
+            <to id="_direct2" uri="direct:call-s2"/>
+            <to id="_dozer1" uri="dozer:response?mappingFile=transformation.xml&amp;sourceModel=org.example.s2.S2Response&amp;targetModel=io.swagger.client.model.DemoData"/>
+            <removeHeaders id="_removeHeaders1" pattern="*"/>
+        </route>
+        <route id="call-s2">
+            <from id="_direct3" uri="direct:call-s2"/>
+            <removeHeaders id="_removeHeaders2" pattern="*"/>
+            <setBody id="_setBody1">
+                <simple>ref:dummyS2</simple>
+            </setBody>
+            <setHeader headerName="CamelDestinationOverrideUrl" id="_setHeader1">
+                <simple>http://s-2-git-default.mycluster-na-d4a42c1d53effecb3a546f2cced5589b-0000.sjc03.containers.appdomain.cloud/services/s2</simple>
+            </setHeader>
+            <to id="_cxf1" uri="cxf:bean:cxfS2"/>
+            <log id="_log2" message="got response from S2 ${body[0]}&#xd;&#xa;&#xd;&#xa;"/>
+            <setProperty id="_setProperty1" propertyName="s2response">
+                <simple>body[0]</simple>
+            </setProperty>
+        </route>
+    </camelContext>
+</beans>
